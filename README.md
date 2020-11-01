@@ -18,10 +18,10 @@ Overview (german, TODO: translate)
 - Ich hab vor viel mit divergierenden Reihen und Borel-Transformationen und Resurgence zu machen, da mein PhD damit zu tun hat. Ich hab von der Numerik allerdings wenig Plan.
 
 # Resourses
-[Bender-Orszag book](https://www.springer.com/us/book/9780387989310)
-[Bender Lectures](https://www.youtube.com/watch?v=LYNOGk3ZjFM) (hab vergessen in welcher Vorlesung er Shanks etc dranbringt)
-[Wikipedia: Series Acceleration](https://en.wikipedia.org/wiki/Series_acceleration)
-[GNU: Series Acceleration](https://www.gnu.org/software/gsl/doc/html/sum.html)
-[Digital Library of Mathematical Functions](https://dlmf.nist.gov/3.9)
-[Overview overtransformation technqiques](https://www.cis.twcu.ac.jp/~osada/thesis_osada.pdf)
-[Overview paper, specializing on algorithms and Levin transformation](https://arxiv.org/pdf/math/0306302.pdf)
+- [Bender-Orszag book](https://www.springer.com/us/book/9780387989310)
+- [Bender Lectures](https://www.youtube.com/watch?v=LYNOGk3ZjFM) (hab vergessen in welcher Vorlesung er Shanks etc dranbringt)
+- [Wikipedia: Series Acceleration](https://en.wikipedia.org/wiki/Series_acceleration)
+- [GNU: Series Acceleration](https://www.gnu.org/software/gsl/doc/html/sum.html)
+- [Digital Library of Mathematical Functions](https://dlmf.nist.gov/3.9)
+- [Overview overtransformation technqiques](https://www.cis.twcu.ac.jp/~osada/thesis_osada.pdf)
+- [Overview paper, specializing on algorithms and Levin transformation](https://arxiv.org/pdf/math/0306302.pdf)
