@@ -6,3 +6,4 @@ categories: ["Mathematics", "Series Acceleration"]
 ---
 
 # Motivation
+The main motivation for Series Acceleration is to accelerate series.
