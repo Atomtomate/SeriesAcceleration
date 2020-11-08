@@ -1,0 +1,32 @@
+# Simple Examples
+- exponential function
+- geometric series
+- gamma function
+	- stirling is divergent
+	- convergent version is useless because converges so slowly
+# Notes
+- ROTEN FADEN HALTEN
+- was sind reihen?
+- wo kommen reihen her?
+- wieso sind reihen wichtig?
+- endliche Reihen
+	- anhand von endlichen reihen zeigen dass der richtige wert rauskommt?
+- Zusammenhang zwischen Pade, continued fractions,
+- Definitionen:
+	- Klassifikation fuer Konvergenzgeschwindikgeit
+- Transformationen:
+	- (Euler)
+	- Richardson
+	- Shanks
+	- Pade
+	- Levins
+- Algorithmen:
+	- naive summe (immer im hintergrund als vergleich)
+	- e-algo
+	- epsilon-algo (Wynn)
+	- rho-algo (zu Levins) (Wynn)
+- Julia Repo
+	- eigenen blog artikel zu tdd julia
+	- document generator
+	- continuous integration
+	- test coverage
