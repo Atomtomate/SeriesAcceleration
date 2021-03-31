@@ -1,0 +1,9 @@
+*.jl.*.cov
+*.jl.cov
+*.jl.mem
+*.dat
+*.bin
+*.jld
+*.jld2
+/docs/build/
+
