@@ -5,5 +5,5 @@
 *.bin
 *.jld
 *.jld2
-/docs/build/
+docs/build/
 
