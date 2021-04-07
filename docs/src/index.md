@@ -1,6 +1,6 @@
-``@meta
+```@meta
 CurrentModule = SeriesAcceleration
-``
+```
 
 # SeriesAcceleration
 
@@ -9,10 +9,9 @@ TODO: desciption here
 
 
 # Index
-``@index
-``
+```@index
+```
 
-``@autodocs
+```@autodocs
 Modules = [SeriesAcceleration]
-``
-`
+```
