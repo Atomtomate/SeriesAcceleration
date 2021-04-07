@@ -3,7 +3,7 @@ using Documenter
 
 push!(LOAD_PATH, "../src/")
 makedocs(;
-    modules=[EquivalenceClassesConstructor],
+    modules=[SeriesAcceleration],
     authors="Julian Stobbe <Atomtomate@gmx.de> and contributors",
     repo="https://github.com/Atomtomate/SeriesAcceleration.jl/blob/{commit}{path}#L{line}",
     sitename="Series Acceleration",
