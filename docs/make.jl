@@ -1,5 +1,5 @@
-using Documenter
 using SeriesAcceleration
+using Documenter
 
 push!(LOAD_PATH, "../src")
 makedocs(;
