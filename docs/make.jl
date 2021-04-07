@@ -1,7 +1,7 @@
-using SeriesAcceleration
 using Documenter
+using SeriesAcceleration
 
-push!(LOAD_PATH, "..")
+push!(LOAD_PATH, "../src")
 makedocs(;
     modules=[SeriesAcceleration],
     authors="Julian Stobbe <Atomtomate@gmx.de> and contributors",
