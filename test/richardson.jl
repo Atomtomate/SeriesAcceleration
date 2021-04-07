@@ -1,37 +1,39 @@
 M1 = SeriesAcceleration.build_M_matrix(1:2, [0,1])
 M2 = SeriesAcceleration.build_M_matrix(1:30, [0,1,2,3,4])
+
 @testset "build M matrix" begin
     @test all(M1 .≈ [2.0 1.5; 1.5 1.25])
     @test all(inv(inv(M2)) .≈ M2)
-    @test_throws DomainError SeriesAcceleration.build_M_matrix([1,2,3], [0,1,2,3])
-    @test_throws DomainError SeriesAcceleration.build_M_matrix(0:2, [0,1])
 end
 
 
 @testset "build weights" begin
-    @test all(SeriesAcceleration.build_weights_rohringer([1,2], [0,1]) .≈ [-1 2; 2 -2]) 
-    # println(SeriesAcceleration.build_weights([1,2], [0,1]))
-    # println(SeriesAcceleration.build_weights_direct(1, [1,2],[1]))
-    # println(SeriesAcceleration.build_weights([1,2,3,4], [0,1,2]))
-    # println(SeriesAcceleration.build_weights_direct(0, [1,2,3,4],[1,2]))
-    # println(SeriesAcceleration.build_weights_direct(1, [1,2,3,4],[1,2]))
-    # println(SeriesAcceleration.build_weights_direct(2, [1,2,3,4],[1,2]))
-    # println(SeriesAcceleration.build_weights_direct(3, [1,2,3,4],[1,2]))
+    @test all(SeriesAcceleration.build_weights_rohringer(1:2, 0:1) .≈ [-1 2; 2 -2]) 
+    @test all(SeriesAcceleration.build_weights_bender(1:2, 0:1) .≈ [-1 -1; 2 2]) 
 end
-wr = SeriesAcceleration.build_weights_rohringer(1:10, [0,1,2,3,4])
-wb0 = SeriesAcceleration.build_weights_bender(1, 0:9, [1,2,3,4]);
-wb1 = SeriesAcceleration.build_weights_bender(1, 1:10, [1,2,3,4]);
-wb2 = SeriesAcceleration.build_weights_bender(20, 0:9, [1,2,3,4]);
-wb3 = SeriesAcceleration.build_weights_bender(91, 91:100, [1,2,3,4]);
 
-rr1 = Richardson(wr)
-rb0 = Richardson(wb0)
-rb1 = Richardson(wb1)
-rb2 = Richardson(wb2)
-rb3 = Richardson(wb3)
+@testset "constructor" begin
+    @test_throws DomainError Richardson(0:2, [0,1],method=:bender)     # starting cum. sum. at 0
+    @test_throws DomainError Richardson(1:3, 1:2,method=:bender) # 0 exponent missing
+    @test_throws DomainError Richardson([1,2,3], [0,1,2,3],method=:rohringer) # not enough exponents
+    @test_throws DomainError Richardson(0:2, [0,1],method=:rohringer)     # starting cum. sum. at 0
+    @test_throws DomainError Richardson(1:3, 1:2,method=:rohringer) # 0 exponent missing
+    @test Richardson(1:1, [0,1],method=:bender).start == 1
+    @test all(Richardson(1:1, [0,1],method=:bender).weights .≈ [-1, 2])
+end
 
-println(acc_csum(cS1_100,rr1))
-println(acc_csum(cS1_100,rb0))
-println(acc_csum(cS1_100,rb1))
-println(acc_csum(cS1_100,rb2))
-println(acc_csum(cS1_100,rb3))
+@testset "functional tests" begin
+    # table from Bender, Orszag 99, p 377
+    bender_N = [0,1,2,3,4]
+    bender_sn = [1,5,10,15]
+    bender_weights_res = [1.0 1.5 1.625 1.6435185185 1.6449652778;
+                          1.464 1.63028 1.64416667 1.6449225246 1.6449358111;
+                          1.550 1.64068 1.64480905 1.6449334030 1.6449341954;
+                          1.580 1.64294 1.64489341 1.6449339578 1.6449340899]
+    for (i,i_sn) in enumerate(bender_sn), (j,j_N) in enumerate(bender_N)
+        r_b = Richardson(i_sn:(i_sn+j_N), 0:j_N, method=:bender)
+        r_r = Richardson(i_sn:(i_sn+j_N), 0:j_N, method=:rohringer)
+        @test isapprox(acc_csum(cS1_100, r_b), bender_weights_res[i,j], atol=1.0e-3)
+        println("TODO: bender: $(acc_csum(cS1_100, r_b)) vs rohringer: $(acc_csum(cS1_100, r_r))")
+    end
+end

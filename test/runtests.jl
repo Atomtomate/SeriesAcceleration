@@ -2,8 +2,9 @@ using SeriesAcceleration
 using Test
 
 # Example Series
-S1_100 = [(6/π^2)/n^2 for n in 1:100]               # ζ(2) = π²/6
-S1_500 = [(6/π^2)/n^2 for n in 1:500]                
+S1_100 = 1 ./ (1:100) .^ 2               # ζ(2) = π²/6
+S1_500 = 1 ./ (1:500) .^ 2              
+S2_100 = [(1/π^2) for n in 1:100]               # ζ(2) = π²/6
 geom(q, n) = [q^k for k in 0:n]
 lim_geom(q,n) = ((1 - q^(n+1))/(1-q), 1/(1-q))
 

@@ -1,5 +1,16 @@
 struct Richardson <: SumHelper
+    start::Int
     weights::Matrix{Float64}
+    function Richardson(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1}; method=:bender)
+        method == :rohringer && (length(dom) < length(exponents)) && throw(DomainError("length of dim must be longer than exponents"))
+        (0.0 in dom) && throw(DomainError("length of cumulative sum can not be smaller than 1"))
+        !(0 in exponents) && throw(DomainError("0th exponent missing!"))
+        if method == :bender
+            return new(first(dom), build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1}))
+        elseif method == :rohringer
+            return new(first(dom), build_weights_rohringer(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1}))
+        end
+    end
 end
 
 """
@@ -16,11 +27,6 @@ The coefficients ``c_n`` are obtained by solving ``M c = b``.
 """
 function build_M_matrix(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})::Array{BigFloat, 2}
     ncoeffs = length(exponents)
-    if length(dom) < ncoeffs
-        throw(DomainError("length of dim must be longer than exponents"))
-    elseif 0.0 in dom
-        throw(DomainError("length of cumulative sum can not be smaller than 1"))
-    end
     M = zeros(BigFloat, (ncoeffs, ncoeffs))
     for i in dom, (ki,k) in enumerate(exponents), (li,l) in enumerate(exponents)
         M[li,ki] += 1.0 / ((BigFloat(i)^(k+l)))
@@ -49,22 +55,22 @@ end
 """
    build_weights_bender(nstart::Int, dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
 
-Build weight matrix in closed form. See C. Bender 99, p. 375. 
+Build weight matrix in closed form. See C. Bender, A. Orszag 99, p. 375. 
 Fit coefficients can be obtained by multiplying `w` with data: ``a_k = W_{kj} g_j``
 """
-function build_weights_bender(nstart::Int, dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
+function build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
     ncoeffs = length(exponents)
-    w = zeros(Float64, (ncoeffs+1, length(dom)))
-    N = BigInt(ncoeffs)
-    kB = BigInt.(exponents)
-    nS = BigInt(nstart)
+    w = zeros(Float64, (ncoeffs, 1))
+    N = BigInt(ncoeffs-1)                       # largest exponent
+    nS = BigInt(first(dom))                     # starting n
 
-    for (ki,k) = enumerate(0:ncoeffs), (ji,j) = enumerate(dom)
-        w[ki,ji] += Float64(((nS+k)^N * (2*iseven(k+N)-1))/(factorial(k)*factorial(N - k)))
+    for (ki,k) = enumerate(BigInt.(exponents))
+        w[ki,1] += Float64(((nS+k)^N * (2*iseven(k+N)-1))/(factorial(k)*factorial(N - k)))
     end
     return w
 end
 
 function acc_csum(arr::AbstractArray{T1,1}, type::Richardson) where {T1 <: Number}
-    return dot(arr[(length(arr)-size(type.weights,2)+1):end], type.weights[1,:])
+    slice = type.start:(type.start+size(type.weights,1)-1)
+    return dot(arr[slice], type.weights[:,1])
 end
