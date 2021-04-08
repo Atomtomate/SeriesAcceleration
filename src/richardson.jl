@@ -37,13 +37,13 @@ end
     build_M_matrix(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
 
 Helper function that build the matrix ``M`` used to fit data obtained for indices
-`dom` to a ``\\sum_{n\\in exponents} c_n/i^n`` tail.
+`dom` to a ``\\sum_{n\\in \\text{exponents}} c_n/i^n`` tail.
 
 `dom` specifies the number of terms for the partial sum, that are to be fitted.
-`exponents` specifies the exponents of ``\\sum_{x \\in dom} \\sum_{p in exponents} 1/i^p`` that the partial sums should be fitted to.
+`exponents` specifies the exponents of ``\\sum_{x \\in \\text{dom}} \\sum_{p \\in \\text{exponents}} 1/i^p`` that the partial sums should be fitted to.
 
 The coefficients ``c_n`` are obtained by solving ``M c = b``. 
-``b`` can be constructed from the data using [`build_rhs`](@ref).
+``b`` can be constructed from the data using [`build_weights_rohringer`](@ref).
 """
 function build_M_matrix(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})::Array{BigFloat, 2}
     ncoeffs = length(exponents)
@@ -55,7 +55,7 @@ function build_M_matrix(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,
 end
 
 """
-   build_weights_rohringer(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
+    build_weights_rohringer(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
 
 Build weight matrix i.e. ``W = M^{-1} R`` with M from [`build_M_matrix`](@ref)
 and ``R_{kj} = \\frac{1}{j^k}``.
@@ -73,7 +73,7 @@ function build_weights_rohringer(dom::AbstractArray{Int,1}, exponents::AbstractA
 end
 
 """
-   build_weights_bender(nstart::Int, dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
+    build_weights_bender(nstart::Int, dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
 
 Build weight matrix in closed form. See C. Bender, A. Orszag 99, p. 375. 
 Fit coefficients can be obtained by multiplying `w` with data: ``a_k = W_{kj} g_j``
@@ -89,7 +89,7 @@ function build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArra
     return w
 end
 
-function acc_csum(arr::AbstractArray{T1,1}, type::Richardson) where {T1 <: Number}
+function esum_c(arr::AbstractArray{T1,1}, type::Richardson) where {T1 <: Number}
     slice = type.start:(type.start+size(type.weights,1)-1)
     return dot(arr[slice], type.weights[:,1])
 end
