@@ -30,10 +30,15 @@ end
                           1.464 1.63028 1.64416667 1.6449225246 1.6449358111;
                           1.550 1.64068 1.64480905 1.6449334030 1.6449341954;
                           1.580 1.64294 1.64489341 1.6449339578 1.6449340899]
+    results_bender = Array{Float64,2}(undef, size(bender_weights_res)...)
+    results_rohringer = Array{Float64,2}(undef, size(bender_weights_res)...)
     for (i,i_sn) in enumerate(bender_sn), (j,j_N) in enumerate(bender_N)
         r_b = Richardson(i_sn:(i_sn+j_N), 0:j_N, method=:bender)
         r_r = Richardson(i_sn:(i_sn+j_N), 0:j_N, method=:rohringer)
-        @test isapprox(acc_csum(cS1_100, r_b), bender_weights_res[i,j], atol=1.0e-3)
-        println("TODO: bender: $(acc_csum(cS1_100, r_b)) vs rohringer: $(acc_csum(cS1_100, r_r))")
+        results_bender[i,j] = acc_csum(cS1_100, r_b)
+        results_rohringer[i,j] = acc_csum(cS1_100, r_r)
+
     end
+    @test all(abs.(results_bender .- bender_weights_res) .< 1.0e-3)
+    @test all(abs.(results_rohringer .- bender_weights_res) .< 1.0e-3)
 end

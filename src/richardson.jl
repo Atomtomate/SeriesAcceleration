@@ -1,3 +1,23 @@
+"""
+    Richardson <: SumHelper
+
+Desciption
+-------------
+Richardson method helper. This struct is initialized with a range of integers `dom`
+and a list of exponents `exponents`, which are used internally. More exponents can
+lead to better convergence at the cost of noise.
+There are two methods available for the fitting of internal weights: `:bender`, `:rohringer`.
+See C. Bender, A. Orszag 99, p. 375; G. Rohringer, A. Toschi 2016 for the derivation
+
+Usage
+-------------
+
+Arguments
+-------------
+
+Examples
+-------------
+"""
 struct Richardson <: SumHelper
     start::Int
     weights::Matrix{Float64}
@@ -49,7 +69,7 @@ function build_weights_rohringer(dom::AbstractArray{Int,1}, exponents::AbstractA
     for k=1:ncoeffs, (li,l) = enumerate(exponents), (ji,j) = enumerate(dom)
         w[k,ji] += Float64(Minv[k, li] / (BigFloat(j)^l), RoundDown)
     end
-    return w
+    return transpose(w)
 end
 
 """
@@ -63,7 +83,6 @@ function build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArra
     w = zeros(Float64, (ncoeffs, 1))
     N = BigInt(ncoeffs-1)                       # largest exponent
     nS = BigInt(first(dom))                     # starting n
-
     for (ki,k) = enumerate(BigInt.(exponents))
         w[ki,1] += Float64(((nS+k)^N * (2*iseven(k+N)-1))/(factorial(k)*factorial(N - k)))
     end
