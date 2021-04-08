@@ -37,7 +37,8 @@ Methods currently implemented are:
 |       Levin      |       todo      |                 |                 |
 
 <a name="c1">1</a>: Bender, C. M., & Orszag, S. A. (1999). Advanced Mathematical Methods for Scientists and Engineers I. Springer New York. https://doi.org/10.1007/978-1-4757-3069-2
-<a name="c2">1</a>: Rohringer, G., & Toschi, A. (2016). Impact of nonlocal correlations over different energy scales: A dynamical vertex approximation study. Physical Review B, 94(12). https://doi.org/10.1103/physrevb.94.125144 
+
+<a name="c2">2</a>: Rohringer, G., & Toschi, A. (2016). Impact of nonlocal correlations over different energy scales: A dynamical vertex approximation study. Physical Review B, 94(12). https://doi.org/10.1103/physrevb.94.125144 
 
 
 |     Build Status    |      Coverage      |  Documentation |      Social    |
