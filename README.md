@@ -1,6 +1,44 @@
 Julia Series Acceleration
 
-first draft
+This package aims to provide methods to estimate the limite of infinite series from a finite
+set of samples.
+
+# Documentation
+
+One first constructs a helper for one of the methods and then calls the sum function with
+the series and this helper. Due to performance reasons, it can be advantageous to use the
+sum function, expecting an array of partial sums instead.
+
+```@repl
+using SeriesAcceleration
+
+start = 1                 # specify the minimum number of summands before to fit
+rh = Richardson(start,5)  # Richardson starting with 1 summands and using 5 exponents
+series = 1 ./ (1:100) .^ 2
+res_1 = esum(rh, series)
+res_2 = esum_c(rh, cumsum(series))
+```
+
+
+# Status
+
+## ToDo's
+
+ - bunch of convenience wrapper functions (for example in-place construction of helpers).
+
+## Overview
+
+Methods currently implemented are:
+
+|       Method     |     Status      |    Algorithms   |    References   | 
+| ---------------- |:---------------:|:---------------:|:---------------:|
+|    Richardson    |   mostly done   |                 |   [^ccb],[^cgr] |
+|      Shanks      |       todo      |                 |                 |
+|       Levin      |       todo      |                 |                 |
+
+[^ccb]: Bender, C. M., & Orszag, S. A. (1999). Advanced Mathematical Methods for Scientists and Engineers I. Springer New York. https://doi.org/10.1007/978-1-4757-3069-2
+[^cgr]: Rohringer, G., & Toschi, A. (2016). Impact of nonlocal correlations over different energy scales: A dynamical vertex approximation study. Physical Review B, 94(12). https://doi.org/10.1103/physrevb.94.125144 
+
 
 |     Build Status    |      Coverage      |  Documentation |      Social    |
 | ------------------- |:------------------:| :-------------:| :-------------:|

@@ -93,3 +93,7 @@ function esum_c(arr::AbstractArray{T1,1}, type::Richardson) where {T1 <: Number}
     slice = type.start:(type.start+size(type.weights,1)-1)
     return dot(arr[slice], type.weights[:,1])
 end
+
+function esum(arr::AbstractArray{T1,1}, type::T2; csum_f::Function=cumsum) where {T1 <: Number, T2 <: SumHelper}
+    esum_c(csum_f(arr), type)
+end
