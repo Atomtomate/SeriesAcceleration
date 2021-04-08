@@ -32,12 +32,12 @@ Methods currently implemented are:
 
 |       Method     |     Status      |    Algorithms   |    References   | 
 | ---------------- |:---------------:|:---------------:|:---------------:|
-|    Richardson    |   mostly done   |                 |   [^ccb],[^cgr] |
+|    Richardson    |   mostly done   |                 |   <sup>[1](#c1)</sup>,<sup>[2](#c2)</sup> |
 |      Shanks      |       todo      |                 |                 |
 |       Levin      |       todo      |                 |                 |
 
-[^ccb]: Bender, C. M., & Orszag, S. A. (1999). Advanced Mathematical Methods for Scientists and Engineers I. Springer New York. https://doi.org/10.1007/978-1-4757-3069-2
-[^cgr]: Rohringer, G., & Toschi, A. (2016). Impact of nonlocal correlations over different energy scales: A dynamical vertex approximation study. Physical Review B, 94(12). https://doi.org/10.1103/physrevb.94.125144 
+<a name="c1">1</a>: Bender, C. M., & Orszag, S. A. (1999). Advanced Mathematical Methods for Scientists and Engineers I. Springer New York. https://doi.org/10.1007/978-1-4757-3069-2
+<a name="c2">1</a>: Rohringer, G., & Toschi, A. (2016). Impact of nonlocal correlations over different energy scales: A dynamical vertex approximation study. Physical Review B, 94(12). https://doi.org/10.1103/physrevb.94.125144 
 
 
 |     Build Status    |      Coverage      |  Documentation |      Social    |
