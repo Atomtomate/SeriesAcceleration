@@ -1,4 +1,8 @@
-Julia Series Acceleration
+# Series Acceleration
+
+|     Build Status    |      Coverage      |  Documentation |      Social    |
+| ------------------- |:------------------:| :-------------:| :-------------:|
+| [![Build Status](https://github.com/Atomtomate/SeriesAcceleration.jl/workflows/CI/badge.svg)](https://github.com/Atomtomate/SeriesAcceleration.jl/actions) |   [![codecov](https://codecov.io/gh/Atomtomate/SeriesAcceleration.jl/branch/master/graph/badge.svg?token=msJVfWnlJI)](https://codecov.io/gh/Atomtomate/SeriesAcceleration.jl) | [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://atomtomate.github.io/SeriesAcceleration.jl/stable/) |[![Gitter](https://badges.gitter.im/JuliansBastelecke/SeriesAcceleration.svg)](https://gitter.im/JuliansBastelecke/SeriesAcceleration?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) |
 
 This package aims to provide methods to estimate the limite of infinite series from a finite
 set of samples.
@@ -25,6 +29,7 @@ res_2 = esum_c(rh, cumsum(series))
 ## ToDo's
 
  - bunch of convenience wrapper functions (for example in-place construction of helpers).
+ - Documentation structure
 
 ## Overview
 
@@ -36,11 +41,11 @@ Methods currently implemented are:
 |      Shanks      |       todo      |                 |                 |
 |       Levin      |       todo      |                 |                 |
 
+
+
+# References
+
 <a name="c1">1</a>: Bender, C. M., & Orszag, S. A. (1999). Advanced Mathematical Methods for Scientists and Engineers I. Springer New York. https://doi.org/10.1007/978-1-4757-3069-2
 
 <a name="c2">2</a>: Rohringer, G., & Toschi, A. (2016). Impact of nonlocal correlations over different energy scales: A dynamical vertex approximation study. Physical Review B, 94(12). https://doi.org/10.1103/physrevb.94.125144 
 
-
-|     Build Status    |      Coverage      |  Documentation |      Social    |
-| ------------------- |:------------------:| :-------------:| :-------------:|
-| [![Build Status](https://github.com/Atomtomate/SeriesAcceleration.jl/workflows/CI/badge.svg)](https://github.com/Atomtomate/SeriesAcceleration.jl/actions) |   [![codecov](https://codecov.io/gh/Atomtomate/SeriesAcceleration.jl/branch/master/graph/badge.svg?token=msJVfWnlJI)](https://codecov.io/gh/Atomtomate/SeriesAcceleration.jl) | [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://atomtomate.github.io/SeriesAcceleration.jl/stable/) |[![Gitter](https://badges.gitter.im/JuliansBastelecke/SeriesAcceleration.svg)](https://gitter.im/JuliansBastelecke/SeriesAcceleration?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) |
