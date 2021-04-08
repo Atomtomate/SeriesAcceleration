@@ -22,6 +22,12 @@ end
     @test all(Richardson(1:1, [0,1],method=:bender).weights .≈ [-1, 2])
 end
 
+@testset "sum" begin
+    r = Richardson(1:1, 0:0)
+    @test esum([1], r) == 1.0
+    @test esum_c([1], r) == 1.0
+end
+
 @testset "functional tests" begin
     # table from Bender, Orszag 99, p 377
     bender_N = [0,1,2,3,4]

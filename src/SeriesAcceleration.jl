@@ -4,7 +4,7 @@ using LinearAlgebra
 # Types
 export Naive, Richardson
 # Main Functions
-export esum_c
+export esum, esum_c
 # Helper Functions
 export rateOfConv
 
