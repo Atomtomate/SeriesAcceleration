@@ -19,6 +19,9 @@ end
 @testset "richardson" begin
     include("./richardson.jl")
 end
+@testset "shanks" begin
+    include("./shanks.jl")
+end
 @testset "tools" begin
     include("./tools.jl")
 end

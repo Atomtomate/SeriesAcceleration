@@ -15,10 +15,15 @@ end
 @testset "constructor" begin
     @test_throws DomainError Richardson(0:2, [0,1],method=:bender)     # starting cum. sum. at 0
     @test_throws DomainError Richardson(1:3, 1:2,method=:bender) # 0 exponent missing
+    @test_throws DomainError Richardson(1:3, [0,2],method=:bender) # 1 exponent missing
+    @test_throws OverflowError Richardson(1000:1100,0:4, method=:bender)
+
     @test_throws DomainError Richardson([1,2,3], [0,1,2,3],method=:rohringer) # not enough exponents
     @test_throws DomainError Richardson(0:2, [0,1],method=:rohringer)     # starting cum. sum. at 0
     @test_throws DomainError Richardson(1:3, 1:2,method=:rohringer) # 0 exponent missing
-    @test Richardson(1:1, [0,1],method=:bender).start == 1
+    @test_throws OverflowError Richardson(1000:1100,0:4, method=:rohringer)
+
+    @test Richardson(1:1, [0,1],method=:bender).indices == 1:1
     @test all(Richardson(1:1, [0,1],method=:bender).weights .≈ [-1, 2])
 end
 
@@ -38,13 +43,16 @@ end
                           1.580 1.64294 1.64489341 1.6449339578 1.6449340899]
     results_bender = Array{Float64,2}(undef, size(bender_weights_res)...)
     results_rohringer = Array{Float64,2}(undef, size(bender_weights_res)...)
+    results_esum = Array{Float64,2}(undef, size(bender_weights_res)...)
     for (i,i_sn) in enumerate(bender_sn), (j,j_N) in enumerate(bender_N)
         r_b = Richardson(i_sn:(i_sn+j_N), 0:j_N, method=:bender)
         r_r = Richardson(i_sn:(i_sn+j_N), 0:j_N, method=:rohringer)
         results_bender[i,j] = esum_c(cS1_100, r_b)
         results_rohringer[i,j] = esum_c(cS1_100, r_r)
+        results_esum[i,j] = esum(S1_100, r_r)
 
     end
     @test all(abs.(results_bender .- bender_weights_res) .< 1.0e-3)
     @test all(abs.(results_rohringer .- bender_weights_res) .< 1.0e-3)
+    @test all(abs.(results_esum .- results_rohringer) .< 1.0e-8)
 end

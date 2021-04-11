@@ -35,11 +35,11 @@ res_2 = esum_c(rh, cumsum(series))
 
 Methods currently implemented are:
 
-|       Method     |     Status      |    Algorithms   |    References   | 
-| ---------------- |:---------------:|:---------------:|:---------------:|
-|    Richardson    |   mostly done   |                 |   <sup>[1](#c1)</sup>,<sup>[2](#c2)</sup> |
-|      Shanks      |       todo      |                 |                 |
-|       Levin      |       todo      |                 |                 |
+|       Method     |     Status      |            Algorithms          |    References   | 
+| ---------------- |:---------------:|:------------------------------:|:---------------:|
+|    Richardson    |   mostly done   |    Matrix Invers, Direct a_0   |   [1](#c1),[2](#c2) |
+|      Shanks      |       todo      |                                |                 |
+|       Levin      |       todo      |                                |                 |
 
 
 

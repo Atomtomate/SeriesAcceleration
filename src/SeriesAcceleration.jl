@@ -2,7 +2,7 @@ module SeriesAcceleration
 using LinearAlgebra
 
 # Types
-export Naive, Richardson
+export Naive, Richardson, Shanks
 # Main Functions
 export esum, esum_c
 # Helper Functions
@@ -10,6 +10,7 @@ export rateOfConv
 
 include("DataTypes.jl")
 include("richardson.jl")
+include("shanks.jl")
 include("tools.jl")
 
 

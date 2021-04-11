@@ -19,16 +19,21 @@ Examples
 -------------
 """
 struct Richardson <: SumHelper
-    start::Int
+    indices::AbstractArray{Int,1}
     weights::Matrix{Float64}
     function Richardson(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1}; method=:bender)
         method == :rohringer && (length(dom) < length(exponents)) && throw(DomainError("length of dim must be longer than exponents"))
         (0.0 in dom) && throw(DomainError("length of cumulative sum can not be smaller than 1"))
         !(0 in exponents) && throw(DomainError("0th exponent missing!"))
         if method == :bender
-            return new(first(dom), build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1}))
+            !(all(exponents .== 0:(length(exponents)-1)) && all(dom .== first(dom):last(dom))) && throw(DomainError("exponent array and domain array can not have gaps for bender weights!"))
+            w = build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
+            (any(abs.(w[:,1]) .> 1.0e12)) && throw(OverflowError("Weights too large! Can not approximate sum over this range, due to loss of precision."))
+            return new(dom, w)
         elseif method == :rohringer
-            return new(first(dom), build_weights_rohringer(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1}))
+            w = build_weights_rohringer(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
+            (any(abs.(w[:,1]) .> 1.0e5)) && throw(OverflowError("Weights too large! Can not approximate sum over this range, due to loss of precision."))
+            return new(dom, w)
         end
     end
 end
@@ -62,18 +67,20 @@ and ``R_{kj} = \\frac{1}{j^k}``.
 Fit coefficients can be obtained by multiplying `w` with data: ``a_k = W_{kj} g_j``
 """
 function build_weights_rohringer(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})::Array{Float64, 2}
-    M = build_M_matrix(dom, exponents)
-    Minv = inv(M)
     ncoeffs = length(exponents)
     w = zeros(Float64, (ncoeffs, length(dom)))
-    for k=1:ncoeffs, (li,l) = enumerate(exponents), (ji,j) = enumerate(dom)
-        w[k,ji] += Float64(Minv[k, li] / (BigFloat(j)^l), RoundDown)
+    setprecision(50000) do
+        M = build_M_matrix(dom, exponents)
+        Minv = inv(M)
+        for k=1:ncoeffs, (li,l) = enumerate(exponents), (ji,j) = enumerate(dom)
+            w[k,ji] += Float64(Minv[k, li] / (BigFloat(j)^l), RoundDown)
+        end
     end
     return transpose(w)
 end
 
 """
-    build_weights_bender(nstart::Int, dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
+    build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
 
 Build weight matrix in closed form. See C. Bender, A. Orszag 99, p. 375. 
 Fit coefficients can be obtained by multiplying `w` with data: ``a_k = W_{kj} g_j``
@@ -90,7 +97,7 @@ function build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArra
 end
 
 function esum_c(arr::AbstractArray{T1,1}, type::Richardson) where {T1 <: Number}
-    slice = type.start:(type.start+size(type.weights,1)-1)
+    slice = type.indices #start:(type.start+size(type.weights,1)-1)
     return dot(arr[slice], type.weights[:,1])
 end
 
