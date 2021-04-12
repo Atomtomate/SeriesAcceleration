@@ -16,8 +16,9 @@ sum function, expecting an array of partial sums instead.
 ```@repl
 using SeriesAcceleration
 
-start = 1                 # specify the minimum number of summands before to fit
-rh = Richardson(start,5)  # Richardson starting with 1 summands and using 5 exponents
+range = 1:10              # specify the minimum number of summands before to fit
+exps   = 0:4               # exponents to fit
+rh = Richardson(range, exps)  # Richardson starting with 1 summands and using 5 exponents
 series = 1 ./ (1:100) .^ 2
 res_1 = esum(rh, series)
 res_2 = esum_c(rh, cumsum(series))
