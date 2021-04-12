@@ -8,6 +8,7 @@ and a list of exponents `exponents`, which are used internally. More exponents c
 lead to better convergence at the cost of noise.
 There are two methods available for the fitting of internal weights: `:bender`, `:rohringer`.
 See C. Bender, A. Orszag 99, p. 375; G. Rohringer, A. Toschi 2016 for the derivation
+Due to the different fit methods, `method=:bender` will not use 
 
 Usage
 -------------
@@ -26,12 +27,14 @@ struct Richardson <: SumHelper
         (0.0 in dom) && throw(DomainError("length of cumulative sum can not be smaller than 1"))
         !(0 in exponents) && throw(DomainError("0th exponent missing!"))
         if method == :bender
-            !(all(exponents .== 0:(length(exponents)-1)) && all(dom .== first(dom):last(dom))) && throw(DomainError("exponent array and domain array can not have gaps for bender weights!"))
-            w = build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
+            exponents = ((last(dom)-length(exponents)+1) > 0) ? exponents : 0:(length(dom)-1)        # cut of unused exponents
+            w = build_weights_bender(dom, exponents)
+            indices = (last(dom)-length(exponents)+1):last(dom)
+            !(all(exponents .== 0:(length(exponents)-1))) && throw(DomainError("exponent array and domain array can not have gaps for bender weights!"))
             (any(abs.(w[:,1]) .> 1.0e12)) && throw(OverflowError("Weights too large! Can not approximate sum over this range, due to loss of precision."))
-            return new(dom, w)
+            return new(indices, w)
         elseif method == :rohringer
-            w = build_weights_rohringer(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1})
+            w = build_weights_rohringer(dom, exponents)
             (any(abs.(w[:,1]) .> 1.0e5)) && throw(OverflowError("Weights too large! Can not approximate sum over this range, due to loss of precision."))
             return new(dom, w)
         end

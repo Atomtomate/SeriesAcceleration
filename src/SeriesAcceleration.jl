@@ -1,5 +1,6 @@
 module SeriesAcceleration
 using LinearAlgebra
+using Logging
 
 # Types
 export Naive, Richardson, Shanks

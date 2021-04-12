@@ -16,15 +16,16 @@ end
     @test_throws DomainError Richardson(0:2, [0,1],method=:bender)     # starting cum. sum. at 0
     @test_throws DomainError Richardson(1:3, 1:2,method=:bender) # 0 exponent missing
     @test_throws DomainError Richardson(1:3, [0,2],method=:bender) # 1 exponent missing
-    @test_throws OverflowError Richardson(1000:1100,0:4, method=:bender)
+    @test_throws OverflowError Richardson(1000:1100,0:6, method=:bender)
 
     @test_throws DomainError Richardson([1,2,3], [0,1,2,3],method=:rohringer) # not enough exponents
     @test_throws DomainError Richardson(0:2, [0,1],method=:rohringer)     # starting cum. sum. at 0
     @test_throws DomainError Richardson(1:3, 1:2,method=:rohringer) # 0 exponent missing
-    @test_throws OverflowError Richardson(1000:1100,0:4, method=:rohringer)
+    @test_throws OverflowError Richardson(1000:1100,0:6, method=:rohringer)
 
-    @test Richardson(1:1, [0,1],method=:bender).indices == 1:1
-    @test all(Richardson(1:1, [0,1],method=:bender).weights .≈ [-1, 2])
+    @test Richardson(1:2, [0,1],method=:bender).indices == 1:2
+    @test all(Richardson(1:2, [0,1],method=:bender).weights .≈ [-1, 2])
+    @test all(Richardson(100:102, [0,1],method=:bender).indices == [101,102])
 end
 
 @testset "sum" begin
