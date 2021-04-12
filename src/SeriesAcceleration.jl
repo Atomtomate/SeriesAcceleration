@@ -3,7 +3,7 @@ using LinearAlgebra
 using Logging
 
 # Types
-export Naive, Richardson, Shanks
+export Naive, Richardson, Shanks, SumHelper
 # Main Functions
 export esum, esum_c
 # Helper Functions
