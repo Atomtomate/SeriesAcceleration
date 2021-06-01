@@ -13,19 +13,20 @@ Due to the different fit methods, `method=:bender` will not use
 Usage
 -------------
 
-Arguments
+Fields
 -------------
-
-Examples
--------------
+- **`indices`**    : `AbstractVector{Int}` of indices of partial sum array which have been fitted
+- **`weights`**    : `Matrix{Float64}` fit weights
 """
 struct Richardson <: SumHelper
     indices::AbstractArray{Int,1}
     weights::Matrix{Float64}
     function Richardson(dom::AbstractArray{Int,1}, exponents::AbstractArray{Int,1}; method=:bender)
-        method == :rohringer && (length(dom) < length(exponents)) && throw(DomainError("length of dim must be longer than exponents"))
+
+        method == :rohringer && (length(dom) < length(exponents)) && throw(DomainError("length of dom(=$(length(dom))) must be longer than list of exponents (=$(exponents))"))
         (0.0 in dom) && throw(DomainError("length of cumulative sum can not be smaller than 1"))
         !(0 in exponents) && throw(DomainError("0th exponent missing!"))
+
         if method == :bender
             exponents = ((last(dom)-length(exponents)+1) > 0) ? exponents : 0:(length(dom)-1)        # cut of unused exponents
             w = build_weights_bender(dom, exponents)
@@ -107,3 +108,5 @@ end
 function esum(arr::AbstractArray{T1,1}, type::Richardson; csum_f::Function=cumsum) where {T1 <: Number}
     return esum_c(csum_f(arr), type)
 end
+
+npartial_sums(type::Richardson) = length(type.indices)

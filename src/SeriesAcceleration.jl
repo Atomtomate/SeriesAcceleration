@@ -7,7 +7,7 @@ export Naive, Richardson, Shanks, SumHelper
 # Main Functions
 export esum, esum_c
 # Helper Functions
-export rateOfConv
+export rateOfConv, npartial_sums
 
 include("DataTypes.jl")
 include("richardson.jl")
@@ -91,5 +91,14 @@ limit = esum(arr, r)
 ```
 """
 esum(arr::AbstractArray{T1,1}, type::T2; csum_f=cumsum) where {T1 <: Number, T2 <: SumHelper} = nothing
+
+"""
+    npartial_sum(type::T2) 
+
+Desciption
+-------------
+Returns the number of partial sum terms needed for this sum helper.
+"""
+npartial_sum(type::T2) where T2 <: SumHelper = nothing
 
 end # module

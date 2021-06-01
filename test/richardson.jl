@@ -34,6 +34,13 @@ end
     @test esum_c([1], r) == 1.0
 end
 
+@testset "auxilliary functions" begin
+    r1 = Richardson(1:1, 0:0)
+    r2 = Richardson(1:2, 0:1)
+    @test npartial_sums(r1) == 1
+    @test npartial_sums(r2) == 2
+end
+
 @testset "functional tests" begin
     # table from Bender, Orszag 99, p 377
     bender_N = [0,1,2,3,4]
