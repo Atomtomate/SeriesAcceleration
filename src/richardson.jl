@@ -101,12 +101,11 @@ function build_weights_bender(dom::AbstractArray{Int,1}, exponents::AbstractArra
 end
 
 function esum_c(arr::AbstractArray{T1,1}, type::Richardson) where {T1 <: Number}
-    slice = type.indices #start:(type.start+size(type.weights,1)-1)
-    return dot(arr[slice], type.weights[:,1])
+    return dot(arr, type.weights[:,1])
 end
 
 function esum(arr::AbstractArray{T1,1}, type::Richardson; csum_f::Function=cumsum) where {T1 <: Number}
-    return esum_c(csum_f(arr), type)
+    return esum_c(csum_f(arr)[type.indices], type)
 end
 
 npartial_sums(type::Richardson) = length(type.indices)

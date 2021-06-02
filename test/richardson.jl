@@ -53,10 +53,11 @@ end
     results_rohringer = Array{Float64,2}(undef, size(bender_weights_res)...)
     results_esum = Array{Float64,2}(undef, size(bender_weights_res)...)
     for (i,i_sn) in enumerate(bender_sn), (j,j_N) in enumerate(bender_N)
-        r_b = Richardson(i_sn:(i_sn+j_N), 0:j_N, method=:bender)
-        r_r = Richardson(i_sn:(i_sn+j_N), 0:j_N, method=:rohringer)
-        results_bender[i,j] = esum_c(cS1_100, r_b)
-        results_rohringer[i,j] = esum_c(cS1_100, r_r)
+        slice = i_sn:(i_sn+j_N)
+        r_b = Richardson(slice, 0:j_N, method=:bender)
+        r_r = Richardson(slice, 0:j_N, method=:rohringer)
+        results_bender[i,j] = esum_c(cS1_100[slice], r_b)
+        results_rohringer[i,j] = esum_c(cS1_100[slice], r_r)
         results_esum[i,j] = esum(S1_100, r_r)
 
     end
