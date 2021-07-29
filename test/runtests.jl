@@ -15,7 +15,7 @@ cS1_500 = cumsum(S1_500)
 cS2_100 = cumsum(S2_100)
 
 
-@testset "naive" begin
+@testset "direct sum" begin
     include("./DataTypes.jl")
 end
 @testset "richardson" begin
